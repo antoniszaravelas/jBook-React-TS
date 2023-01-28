@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { useState, useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
+import { unpkgPathPlugin } from "./plugins/unpgk-path-plugin";
 
 /*
 the problem with esbuild, is that it needs to bundle the modules with eachother
@@ -42,12 +43,20 @@ const App = () => {
     // ref.current contains what the function esbuild.startService returns, so the object with transform etc
     // you can use a ref to keep a reference to any JS value inside of a component :o
     if (!ref.current) return;
-    const result = await ref.current.transform(input, {
-      // what kind of code am I providing? JS, JSX, TS?
-      loader: "jsx",
-      target: "es2015",
+    const result = await ref.current.build({
+      // means the index.js file is the first to be bundled, bundle it!
+      // 1. where is index.js? (onResolve step (see unpgk-path-plugin.ts))
+      // 2. load up the index.js file (onLoad step)
+      // 3. parse the index.js, find any import / require / exports
+      // 4. if you found imports/require/exports , repeat steps 1 and 2
+      entryPoints: ["index.js"],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin()],
     });
-    setCode(result.code);
+
+    console.log(result);
+    setCode(result.outputFiles[0].text);
   };
 
   return (
