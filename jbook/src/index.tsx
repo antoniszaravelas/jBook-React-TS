@@ -3,9 +3,22 @@ import ReactDOM from "react-dom/client";
 import { useState, useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
 
+/*
+the problem with esbuild, is that it needs to bundle the modules with eachother
+which are locally on the file system, but also the modules that I import as npm 
+packages. This cannot be done in the browser, because the browser has no access
+to the file system. So we have to do it in another way:
+
+we need to fetch (intercept) when the esbuild bundler sees for example that we have
+import react from "react", we need to fetch the source code of react and provide it to the 
+ESBUILD Bundler, so it can bundle it with the rest of our application in the browser
+
+npm view react(or any other package) dist.tarball => this will give me the source code
+of the XXX package that I have written. 
+*/
+
 const App = () => {
   const ref = useRef<any>();
-  const ref2 = useRef<any>();
   const [input, setInput] = useState("");
   const [code, setCode] = useState("");
 
@@ -25,11 +38,16 @@ const App = () => {
     // build: for bundling
   }, []);
 
-  const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const onClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     // ref.current contains what the function esbuild.startService returns, so the object with transform etc
     // you can use a ref to keep a reference to any JS value inside of a component :o
     if (!ref.current) return;
-    else console.log(ref.current);
+    const result = await ref.current.transform(input, {
+      // what kind of code am I providing? JS, JSX, TS?
+      loader: "jsx",
+      target: "es2015",
+    });
+    setCode(result.code);
   };
 
   return (
