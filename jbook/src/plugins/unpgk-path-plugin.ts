@@ -5,7 +5,7 @@ import axios from "axios";
 // ESBUILD more streamlined than Webpack (which means that not many lines of code)
 // and helper functions are needed to create the bundle
 
-export const unpkgPathPlugin = () => {
+export const unpkgPathPlugin = (code: string) => {
   return {
     // name: for debugging purposes, in case you have more plug-ins working inside the project
     name: "unpkg-path-plugin",
@@ -40,10 +40,7 @@ export const unpkgPathPlugin = () => {
           // dont let it load the index.js, just return what I want (normally it would return what it finds)
           return {
             loader: "jsx",
-            contents: `
-		        import message from 'nested-test-pkg';
-		        console.log(message);
-		        `,
+            contents: code,
           };
         }
         const { data, request } = await axios.get(args.path);
