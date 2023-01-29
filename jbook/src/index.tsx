@@ -48,7 +48,7 @@ const App = () => {
       // 1. where is index.js? (onResolve step (see unpgk-path-plugin.ts))
       // 2. load up the index.js file (onLoad step)
       // 3. parse the index.js, find any import / require / exports
-      // 4. if you found imports/require/exports , repeat steps 1 and 2
+      // 4. if you found imports/require/exports  , repeat steps 1 and 2
       entryPoints: ["index.js"],
       bundle: true,
       write: false,
