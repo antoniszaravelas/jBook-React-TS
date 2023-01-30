@@ -11,7 +11,7 @@ const fileCache = localForage.createInstance({
 // ESBUILD more streamlined than Webpack (which means that not many lines of code)
 // and helper functions are needed to create the bundle
 
-export const unpkgPathPlugin = () => {
+export const unpkgPathPlugin = (codeToBeBundled: string) => {
   return {
     // name: for debugging purposes, in case you have more plug-ins working inside the project
     name: "unpkg-path-plugin",
@@ -45,9 +45,7 @@ export const unpkgPathPlugin = () => {
           // dont let it load the index.js, just return what I want (normally it would return what it finds)
           return {
             loader: "jsx",
-            contents: `
-            import React, {useState} from 'react-select';
-            `,
+            contents: codeToBeBundled,
           };
         }
         // <> this on TS describes what kind of thing will be returned
