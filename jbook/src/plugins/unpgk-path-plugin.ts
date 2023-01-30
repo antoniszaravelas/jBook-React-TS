@@ -1,11 +1,17 @@
 import * as esbuild from "esbuild-wasm";
 import axios from "axios";
+import localForage from "localforage";
+// localForage is using indexedDB, much more space than LocalStorage
+
+const fileCache = localForage.createInstance({
+  name: "fileCache",
+});
 
 // a plug-in for ESBUILD (other plug-ins can be used for other bundlers)
 // ESBUILD more streamlined than Webpack (which means that not many lines of code)
 // and helper functions are needed to create the bundle
 
-export const unpkgPathPlugin = (code: string) => {
+export const unpkgPathPlugin = () => {
   return {
     // name: for debugging purposes, in case you have more plug-ins working inside the project
     name: "unpkg-path-plugin",
@@ -23,14 +29,13 @@ export const unpkgPathPlugin = (code: string) => {
           return { path: args.path, namespace: "a" };
         }
 
-        console.log(args);
-
         return {
           namespace: "a",
-          path: args.path.includes("/")
-            ? new URL(args.path, `https://www.unpkg.com${args.resolveDir}/`)
-                .href
-            : `https://www.unpkg.com/${args.path}`,
+          path:
+            args.path.includes("./") || args.path.includes("../")
+              ? new URL(args.path, `https://www.unpkg.com${args.resolveDir}/`)
+                  .href
+              : `https://www.unpkg.com/${args.path}`,
         };
       });
 
@@ -40,17 +45,30 @@ export const unpkgPathPlugin = (code: string) => {
           // dont let it load the index.js, just return what I want (normally it would return what it finds)
           return {
             loader: "jsx",
-            contents: code,
+            contents: `
+            import React, {useState} from 'react-select';
+            `,
           };
         }
+        // <> this on TS describes what kind of thing will be returned
+        const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(
+          args.path
+        );
+
+        if (cachedResult) return cachedResult;
+
         const { data, request } = await axios.get(args.path);
-        console.log(data);
+
         // resolveDir will be provided to the next import that we will need to do
-        return {
+        const result: esbuild.OnLoadResult = {
           loader: "jsx",
           contents: data,
           resolveDir: new URL("./", request.responseURL).pathname,
         };
+
+        // time to cache the source code because it is not in the indexedDB
+        await fileCache.setItem(args.path, result);
+        return result;
       });
     },
   };
