@@ -21,8 +21,8 @@ of the XXX package that I have written.
 
 const App = () => {
   const ref = useRef<any>();
+  const iframeRef = useRef<any>();
   const [input, setInput] = useState("");
-  const [code, setCode] = useState("");
 
   //   actual initialisation
   const startService = async () => {
@@ -61,8 +61,32 @@ const App = () => {
         global: "window",
       },
     });
-    setCode(result.outputFiles[0].text);
+    // contentWindow returns the Window object of an HTMLIFrameElement
+    iframeRef.current.contentWindow.postMessage(
+      // this is the bundled code
+      result.outputFiles[0].text,
+      "*"
+    );
   };
+
+  const html = `
+  <html>
+    <head></head>
+    <body>
+        <div id="root"></div>
+        <script>
+            window.addEventListener("message", (event)=>{
+                try{
+                    eval(event.data);
+                }catch(e){
+                   document.querySelector("#root").innerHTML = '<div>' + e+ '</div>';
+                   throw e;
+                }
+            },false)
+        </script>
+    </body>
+  </html>
+  `;
 
   return (
     <>
@@ -73,8 +97,10 @@ const App = () => {
         style={{ width: "400px", height: "150px" }}
       ></textarea>
       <br />
-      <button onClick={onClick}>Submit</button>
-      <pre>{code}</pre>
+      <button style={{ display: "block" }} onClick={onClick}>
+        Submit
+      </button>
+      <iframe ref={iframeRef} srcDoc={html} sandbox="allow-scripts"></iframe>
     </>
   );
 };
