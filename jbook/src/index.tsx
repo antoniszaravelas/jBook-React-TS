@@ -5,6 +5,7 @@ import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "./plugins/unpgk-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import CodeEditor from "./components/code-editor";
+import "bulmaswatch/superhero/bulmaswatch.min.css";
 
 /*
 the problem with esbuild, is that it needs to bundle the modules with eachother
@@ -97,12 +98,12 @@ const App = () => {
 
   return (
     <>
-      <h1>Type code here:</h1>
-      <textarea
+      {/* <h1>Type code here:</h1> */}
+      {/* <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         style={{ width: "400px", height: "150px" }}
-      ></textarea>
+      ></textarea> */}
 
       <CodeEditor
         onChange={(inputCode) => onCodeChange(inputCode)}
