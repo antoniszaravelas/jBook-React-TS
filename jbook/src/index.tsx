@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "./plugins/unpgk-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
+import CodeEditor from "./components/code-editor";
 
 /*
 the problem with esbuild, is that it needs to bundle the modules with eachother
@@ -44,6 +45,10 @@ const App = () => {
     // ref.current contains what the function esbuild.startService returns, so the object with transform etc
     // you can use a ref to keep a reference to any JS value inside of a component :o
     if (!ref.current) return;
+
+    // doesn't matter if the variable has been defined before
+    iframeRef.current.srcdoc = html;
+
     const result = await ref.current.build({
       // means the index.js file is the first to be bundled, bundle it!
       // 1. where is index.js? (onResolve step (see unpgk-path-plugin.ts))
@@ -62,6 +67,7 @@ const App = () => {
       },
     });
     // contentWindow returns the Window object of an HTMLIFrameElement
+
     iframeRef.current.contentWindow.postMessage(
       // this is the bundled code
       result.outputFiles[0].text,
@@ -80,7 +86,7 @@ const App = () => {
                     eval(event.data);
                 }catch(e){
                    document.querySelector("#root").innerHTML = '<div>' + e+ '</div>';
-                   throw e;
+                   console.error(e);
                 }
             },false)
         </script>
@@ -96,11 +102,18 @@ const App = () => {
         onChange={(e) => setInput(e.target.value)}
         style={{ width: "400px", height: "150px" }}
       ></textarea>
+
+      <CodeEditor />
       <br />
       <button style={{ display: "block" }} onClick={onClick}>
         Submit
       </button>
-      <iframe ref={iframeRef} srcDoc={html} sandbox="allow-scripts"></iframe>
+      <iframe
+        title="codePreview"
+        ref={iframeRef}
+        srcDoc={html}
+        sandbox="allow-scripts"
+      ></iframe>
     </>
   );
 };
