@@ -67,7 +67,6 @@ const App = () => {
       },
     });
     // contentWindow returns the Window object of an HTMLIFrameElement
-
     iframeRef.current.contentWindow.postMessage(
       // this is the bundled code
       result.outputFiles[0].text,
@@ -94,6 +93,8 @@ const App = () => {
   </html>
   `;
 
+  const onCodeChange = (cc: string) => {};
+
   return (
     <>
       <h1>Type code here:</h1>
@@ -103,7 +104,10 @@ const App = () => {
         style={{ width: "400px", height: "150px" }}
       ></textarea>
 
-      <CodeEditor />
+      <CodeEditor
+        onChange={(inputCode) => onCodeChange(inputCode)}
+        initialValue="const a =1"
+      />
       <br />
       <button style={{ display: "block" }} onClick={onClick}>
         Submit
