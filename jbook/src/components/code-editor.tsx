@@ -1,4 +1,4 @@
-import MonacoEditor, { monaco } from "@monaco-editor/react";
+import MonacoEditor from "@monaco-editor/react";
 import { EditorDidMount } from "@monaco-editor/react";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
@@ -21,7 +21,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue, onChange }) => {
     // getValue finds the text in the editor
     monacoRef.current = monacoEditor;
     monacoEditor.onDidChangeModelContent(() => {
-      // whenever the contents of the editor change in any way
+      // whenever the contents of the editor change in any way, we give them as a callback (see index.tsx)
       onChange(getValue());
     });
 

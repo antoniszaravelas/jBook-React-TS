@@ -1,11 +1,25 @@
 import * as esbuild from "esbuild-wasm";
-import { unpkgPathPlugin } from "../plugins/unpgk-path-plugin";
-import { fetchPlugin } from "../plugins/fetch-plugin";
+import { unpkgPathPlugin } from "./plugins/unpgk-path-plugin";
+import { fetchPlugin } from "./plugins/fetch-plugin";
+
+/*
+the problem with esbuild, is that it needs to bundle the modules with eachother
+which are locally on the file system, but also the modules that I import as npm 
+packages. This cannot be done in the browser, because the browser has no access
+to the file system. So we have to do it in another way:
+
+we need to fetch (intercept) when the esbuild bundler sees for example that we have
+import react from "react", we need to fetch the source code of react and provide it to the 
+ESBUILD Bundler, so it can bundle it with the rest of our application in the browser
+
+npm view react(or any other package) dist.tarball => this will give me the source code
+of the XXX package that I have written. 
+*/
 
 let service: esbuild.Service;
 
 // whatever code the user wrote in the editor
-export default async (rawCode: string) => {
+const bundle = async (rawCode: string) => {
   // here comes the bundle (the service needs to be initiated one time)
   if (!service) {
     service = await esbuild.startService({
@@ -34,3 +48,5 @@ export default async (rawCode: string) => {
 
   return result.outputFiles[0].text;
 };
+
+export default bundle;
