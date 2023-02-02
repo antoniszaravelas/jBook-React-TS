@@ -28,25 +28,32 @@ const bundle = async (rawCode: string) => {
     });
   }
 
-  const result = await service.build({
-    // means the index.js file is the first to be bundled, bundle it!
-    // 1. where is index.js? (onResolve step (see unpgk-path-plugin.ts))
-    // 2. load up the index.js file (onLoad step)
-    // 3. parse the index.js, find any import / require / exports
-    // 4. if you found imports/require/exports  , repeat steps 1 and 2
-    entryPoints: ["index.js"],
-    bundle: true,
-    write: false,
-    plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
-    define: {
-      "process.env.NODE_ENV": '"production"',
-      // we put ' " otherwise it would have been evaluated as a value 'development'
-      // and not string
-      global: "window",
-    },
-  });
+  try {
+    const result = await service.build({
+      // means the index.js file is the first to be bundled, bundle it!
+      // 1. where is index.js? (onResolve step (see unpgk-path-plugin.ts))
+      // 2. load up the index.js file (onLoad step)
+      // 3. parse the index.js, find any import / require / exports
+      // 4. if you found imports/require/exports  , repeat steps 1 and 2
+      entryPoints: ["index.js"],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
+      define: {
+        "process.env.NODE_ENV": '"production"',
+        // we put ' " otherwise it would have been evaluated as a value 'development'
+        // and not string
+        global: "window",
+      },
+    });
 
-  return result.outputFiles[0].text;
+    return { code: result.outputFiles[0].text, error: "" };
+  } catch (error) {
+    console.log("omg ouch I got it");
+    if (error instanceof Error) return { code: "", error: error.message };
+  }
+
+  return { code: "", error: "" };
 };
 
 export default bundle;

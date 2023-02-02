@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CodeEditor from "./code-editor";
 import Preview from "./preview";
 import bundle from "../bundler";
@@ -8,10 +8,19 @@ import Resizable from "./resizable";
 const CodeCell = () => {
   const [input, setInput] = useState("");
   const [code, setCode] = useState("");
-  const onClick = async () => {
-    const output = await bundle(input);
-    setCode(output);
-  };
+
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const output = await bundle(input);
+      console.log("the output is: ", output);
+      setCode(output.code);
+    }, 1000);
+
+    // if I return a function, it will be called next time that useEffect is called
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [input]);
 
   return (
     <Resizable direction="vertical">
