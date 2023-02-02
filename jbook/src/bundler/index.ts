@@ -13,7 +13,7 @@ import react from "react", we need to fetch the source code of react and provide
 ESBUILD Bundler, so it can bundle it with the rest of our application in the browser
 
 npm view react(or any other package) dist.tarball => this will give me the source code
-of the XXX package that I have written. 
+of the XXX package that I have written. x
 */
 
 let service: esbuild.Service;
