@@ -1,6 +1,7 @@
 import { ActionTypes } from "../action-types";
+import { CellTypes } from "../cell";
 
-type UpdateCell = {
+export type UpdateCellAction = {
   type: ActionTypes.UPDATE_CELL;
   payload: {
     id: string;
@@ -9,12 +10,12 @@ type UpdateCell = {
   };
 };
 
-type DeleteCell = {
+export type DeleteCellAction = {
   type: ActionTypes.DELETE_CELL;
   payload: string;
 };
 
-type MoveCell = {
+export type MoveCellAction = {
   type: ActionTypes.MOVE_CELL;
   payload: {
     // id of the cell I want to move
@@ -23,12 +24,18 @@ type MoveCell = {
   };
 };
 
-type InsertCellBefore = {
+export type InsertCellBeforeAction = {
   type: ActionTypes.INSERT_CELL_BEFORE;
   payload: {
     id: string;
-    type: "text" | "code";
+    type: CellTypes;
   };
 };
 
 // 2 Types of Cells :)
+
+export type Action =
+  | UpdateCellAction
+  | DeleteCellAction
+  | MoveCellAction
+  | InsertCellBeforeAction;
