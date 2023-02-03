@@ -1,0 +1,9 @@
+.w-md-editor .title {
+  line-height: unset;
+  font-size: unset;
+  font-weight: unset;
+}
+
+body {
+  line-height: unset;
+}
