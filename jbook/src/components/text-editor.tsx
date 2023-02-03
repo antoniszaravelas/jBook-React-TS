@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import "./text-editor.css";
 
 const TextEditor: React.FC = ({}) => {
-  const [value, setValue] = useState("**Hello world!!!**");
+  const [value, setValue] = useState("**Header**");
   const [editing, setEditing] = useState(false);
   const editorRef = useRef<any>();
 
@@ -27,15 +27,17 @@ const TextEditor: React.FC = ({}) => {
 
   if (editing) {
     return (
-      <div ref={editorRef}>
-        <MDEditor />
+      <div className="text-editor" ref={editorRef}>
+        <MDEditor value={value} onChange={(value) => setValue(value || "")} />
       </div>
     );
   }
 
   return (
-    <div onClick={() => setEditing(true)} className="container">
-      <MDEditor.Markdown source={value} style={{ whiteSpace: "pre-wrap" }} />
+    <div className="text-editor card" onClick={() => setEditing(true)}>
+      <div className="card-content">
+        <MDEditor.Markdown source={value} style={{ whiteSpace: "pre-wrap" }} />
+      </div>
     </div>
   );
 };
