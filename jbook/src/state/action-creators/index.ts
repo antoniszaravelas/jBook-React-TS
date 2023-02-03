@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ActionTypes } from "../action-types";
-import { Action } from "../actions";
+import { Action, Direction } from "../actions";
 import { Dispatch } from "redux";
 import {
   MoveCellAction,
@@ -8,39 +8,41 @@ import {
   DeleteCellAction,
   InsertCellBeforeAction,
 } from "../actions";
+import { CellTypes } from "../cell";
 
-export const updateCell = (): UpdateCellAction => {};
-export const deleteCell = (): DeleteCellAction => {};
-export const moveCell = (): MoveCellAction => {};
-export const insertCellBefore = (): InsertCellBeforeAction => {};
-
-// return async (dispatch: Dispatch<Action>) => {
-//     dispatch({ type: ActionType.SEARCH_REPOSITORIES });
-
-//     try {
-//       // it's as if I say https://registry.npmjs.org/-/v1/search?text=term
-//       const { data } = await axios.get(
-//         `https://registry.npmjs.org/-/v1/search`,
-//         {
-//           params: {
-//             text: term,
-//           },
-//         }
-//       );
-
-//       const names = data.objects.map((result: any) => result.package.name);
-
-//       dispatch({
-//         type: ActionType.SEARCH_REPOSITORIES_SUCCESS,
-//         payload: names,
-//       });
-//     } catch (error) {
-//       if (error instanceof Error) {
-//         dispatch({
-//           type: ActionType.SEARCH_REPOSITORIES_ERROR,
-//           payload: error.message,
-//         });
-//       }
-//     }
-//   };
-// };
+export const updateCell = (id: string, content: string): UpdateCellAction => {
+  return {
+    type: ActionTypes.UPDATE_CELL,
+    payload: {
+      id,
+      content,
+    },
+  };
+};
+export const deleteCell = (id: string): DeleteCellAction => {
+  return {
+    type: ActionTypes.DELETE_CELL,
+    payload: id,
+  };
+};
+export const moveCell = (id: string, direction: Direction): MoveCellAction => {
+  return {
+    type: ActionTypes.MOVE_CELL,
+    payload: {
+      id,
+      direction,
+    },
+  };
+};
+export const insertCellBefore = (
+  id: string,
+  cellType: CellTypes
+): InsertCellBeforeAction => {
+  return {
+    type: ActionTypes.INSERT_CELL_BEFORE,
+    payload: {
+      id,
+      type: cellType,
+    },
+  };
+};

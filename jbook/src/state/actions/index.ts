@@ -1,6 +1,8 @@
 import { ActionTypes } from "../action-types";
 import { CellTypes } from "../cell";
 
+export type Direction = "up" | "down";
+
 export type UpdateCellAction = {
   type: ActionTypes.UPDATE_CELL;
   payload: {
@@ -20,14 +22,14 @@ export type MoveCellAction = {
   payload: {
     // id of the cell I want to move
     id: string;
-    direction: "up" | "down";
+    direction: Direction;
   };
 };
 
 export type InsertCellBeforeAction = {
   type: ActionTypes.INSERT_CELL_BEFORE;
   payload: {
-    id: string;
+    id: string | null;
     type: CellTypes;
   };
 };
