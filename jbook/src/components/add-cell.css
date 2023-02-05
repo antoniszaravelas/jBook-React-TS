@@ -1,0 +1,50 @@
+button {
+  padding: 4px 3px;
+  font-size: 15px;
+  background-color: rgb(251, 251, 83);
+  border: 0;
+  margin-right: 10px;
+  border-radius: 10px;
+  z-index: 20;
+  position: relative;
+}
+
+.add-cell > span {
+  display: block;
+  position: absolute;
+  bottom: 50%;
+  border-bottom: 1px solid white;
+  color: transparent;
+  z-index: 0;
+  width: 80%;
+  left: 10%;
+}
+
+.add-cell > div {
+  display: flex;
+  justify-content: center;
+}
+
+.add-cell {
+  position: relative;
+  opacity: 0;
+  transition: all 0.5s ease-in 0.1s;
+  margin: 10px 0;
+}
+
+.add-cell:hover {
+  opacity: 1;
+}
+
+.add-cell:active {
+  opacity: 0 !important;
+  transition: opacity 0s;
+}
+
+.force-visible .add-cell {
+  opacity: 1;
+}
+
+.add-cell button:hover {
+  cursor: pointer;
+}
