@@ -21,14 +21,15 @@ export interface CellsState {
 }
 
 export const cellsReducer = produce(
-  (state: CellsState = initialState, action: Action) => {
+  (state: CellsState = initialState, action: Action): CellsState => {
     switch (action.type) {
       case ActionTypes.MOVE_CELL:
         let { direction } = action.payload;
         const index = state.order.findIndex((id) => id === action.payload.id);
         const targetIndex = direction === "up" ? index - 1 : index + 1;
 
-        if (targetIndex < 0 || targetIndex > state.order.length - 1) return;
+        if (targetIndex < 0 || targetIndex > state.order.length - 1)
+          return state;
 
         state.order[index] = state.order[targetIndex];
         state.order[targetIndex] = action.payload.id;
