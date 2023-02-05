@@ -6,6 +6,16 @@
   left: 50px;
 }
 
+.cell-list-item .action-bar {
+  opacity: 0.5;
+  transition: all 0.5s;
+}
+
+.cell-list-item > .action-bar:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
 .action-bar {
   display: inline-block;
   position: absolute;
