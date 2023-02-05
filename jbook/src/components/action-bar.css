@@ -1,0 +1,14 @@
+.cell-list-item > .action-bar svg {
+  background-color: rgb(176, 115, 1);
+  margin-right: 3px;
+  padding: 6px;
+  z-index: 10;
+  left: 50px;
+}
+
+.action-bar {
+  display: inline-block;
+  position: absolute;
+  right: 9.2%;
+  z-index: 10;
+}
