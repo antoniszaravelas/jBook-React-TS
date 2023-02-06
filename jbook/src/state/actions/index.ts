@@ -36,8 +36,29 @@ export type InsertCellBeforeAction = {
 
 // 2 Types of Cells :)
 
+export interface BundleStartAction {
+  type: ActionTypes.BUNDLE_START;
+  payload: {
+    cellId: string;
+  };
+}
+
+export interface BundleCompleteAction {
+  type: ActionTypes.BUNDLE_COMPLETE;
+  payload: {
+    // which cell did I finish the bundling for?
+    cellId: string;
+    bundle: {
+      code: string;
+      err: string;
+    };
+  };
+}
+
 export type Action =
   | UpdateCellAction
   | DeleteCellAction
   | MoveCellAction
-  | InsertCellBeforeAction;
+  | InsertCellBeforeAction
+  | BundleStartAction
+  | BundleCompleteAction;

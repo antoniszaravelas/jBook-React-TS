@@ -1,14 +1,18 @@
 import axios from "axios";
 import { ActionTypes } from "../action-types";
-import { Action, Direction } from "../actions";
 import { Dispatch } from "redux";
 import {
   MoveCellAction,
   UpdateCellAction,
   DeleteCellAction,
   InsertCellBeforeAction,
+  BundleStartAction,
+  BundleCompleteAction,
+  Action,
+  Direction,
 } from "../actions";
 import { CellTypes } from "../cell";
+import bundle from "../../bundler";
 
 export const updateCell = (id: string, content: string): UpdateCellAction => {
   return {
@@ -44,5 +48,21 @@ export const insertCellBefore = (
       id,
       type: cellType,
     },
+  };
+};
+
+export const bundleActionCreator = (cellId: string, input: string) => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionTypes.BUNDLE_START, payload: { cellId } });
+
+    const result = await bundle(input);
+
+    dispatch({
+      type: ActionTypes.BUNDLE_COMPLETE,
+      payload: {
+        cellId,
+        bundle: { code: result.code, err: result.error },
+      },
+    });
   };
 };

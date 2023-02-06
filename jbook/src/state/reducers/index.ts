@@ -3,7 +3,7 @@ import { cellsReducer } from "./cellsReducer";
 import { combineReducers } from "redux";
 
 // in case there are more add them here
-export const rootReducer = combineReducers({ cellsReducer });
+export const rootReducer = combineReducers({ cellsReducer, bundlesReducer });
 // THAT MEANS it is going to be an object that says {reducer: {....}, .. (in case of other reducers)}
 
 export type RootState = ReturnType<typeof rootReducer>;
