@@ -1,4 +1,3 @@
-import axios from "axios";
 import { ActionTypes } from "../action-types";
 import { Dispatch } from "redux";
 import {
@@ -6,8 +5,6 @@ import {
   UpdateCellAction,
   DeleteCellAction,
   InsertCellBeforeAction,
-  BundleStartAction,
-  BundleCompleteAction,
   Action,
   Direction,
 } from "../actions";

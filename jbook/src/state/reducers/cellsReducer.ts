@@ -2,7 +2,6 @@ import produce from "immer";
 import { Action } from "../actions";
 import { ActionTypes } from "../action-types";
 import { Cell } from "../cell";
-import { orderedListCommand } from "@uiw/react-md-editor/lib/cjs/commands";
 
 const initialState = {
   loading: false,
