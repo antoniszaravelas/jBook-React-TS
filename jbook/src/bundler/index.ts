@@ -49,7 +49,6 @@ const bundle = async (rawCode: string) => {
 
     return { code: result.outputFiles[0].text, error: "" };
   } catch (error) {
-    console.log("omg ouch I got it");
     if (error instanceof Error) return { code: "", error: error.message };
   }
 

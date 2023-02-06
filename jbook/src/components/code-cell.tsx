@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CodeEditor from "./code-editor";
 import Preview from "./preview";
-import bundle from "../bundler";
 import Resizable from "./resizable";
 import { Cell } from "../state";
 import { useActions } from "../hooks/useActions";
+import { useTypedSelector } from "../hooks/use-typed-selector";
 
 interface CodeCellProps {
   cell: Cell;
@@ -12,21 +12,20 @@ interface CodeCellProps {
 
 // showing 1 code editor and 1 preview window
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const [code, setCode] = useState("");
+  const { updateCell, bundleActionCreator } = useActions();
 
-  const { updateCell } = useActions();
+  const bundle = useTypedSelector((state) => state.bundlesReducer[cell.id]);
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      const output = await bundle(cell.content || "");
-      setCode(output.code);
-    }, 1000);
+      bundleActionCreator(cell.id, cell.content || "");
+    }, 750);
 
     // if I return a function, it will be called next time that useEffect is called
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content]);
+  }, [cell.content, cell.id]);
 
   return (
     <Resizable direction="vertical">
@@ -37,7 +36,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             onChange={(value) => updateCell(cell.id, value)}
           />
         </Resizable>
-        <Preview code={code} />
+        {bundle && <Preview code={bundle.code} error={bundle.err} />}
       </div>
     </Resizable>
   );

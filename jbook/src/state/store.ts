@@ -30,5 +30,3 @@ store.dispatch({
     type: "text",
   },
 });
-
-console.log(store.getState());
