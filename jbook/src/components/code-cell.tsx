@@ -6,6 +6,7 @@ import Resizable from "./resizable";
 import { Cell } from "../state";
 import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/use-typed-selector";
+import useCumulativeCode from "../hooks/use-cumulative-code";
 
 interface CodeCellProps {
   cell: Cell;
@@ -18,13 +19,15 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   // this is why we use useMemo so it doesn't change everytime the component is re-rendered
   const bundle = useTypedSelector((state) => state.bundlesReducer[cell.id]);
 
+  const cumulativeCode = useCumulativeCode(cell.id);
+
   useEffect(() => {
     if (!bundle) {
-      bundleActionCreator(cell.id, cell.content || "");
+      bundleActionCreator(cell.id, cumulativeCode.join("\n") || "");
       return;
     }
     const timer = setTimeout(async () => {
-      bundleActionCreator(cell.id, cell.content || "");
+      bundleActionCreator(cell.id, cumulativeCode.join("\n") || "");
     }, 750);
 
     // if I return a function, it will be called next time that useEffect is called
@@ -32,7 +35,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.content, cell.id, bundleActionCreator]);
+  }, [cumulativeCode.join("\n"), cell.id, bundleActionCreator]);
 
   return (
     <Resizable direction="vertical">

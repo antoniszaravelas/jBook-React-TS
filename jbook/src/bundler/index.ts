@@ -45,6 +45,8 @@ const bundle = async (rawCode: string) => {
         // and not string
         global: "window",
       },
+      jsxFactory: "_React.createElement",
+      jsxFragment: "_React.Fragment",
     });
 
     return { code: result.outputFiles[0].text, error: "" };
