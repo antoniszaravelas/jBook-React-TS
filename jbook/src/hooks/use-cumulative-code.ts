@@ -36,7 +36,7 @@ const useCumulativeCode = (cellId: string) => {
     }
 
     return cumulativeCode;
-  });
+  }).join("\n");
 
   return cumulativeCode;
 };

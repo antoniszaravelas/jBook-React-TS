@@ -23,11 +23,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   useEffect(() => {
     if (!bundle) {
-      bundleActionCreator(cell.id, cumulativeCode.join("\n") || "");
+      bundleActionCreator(cell.id, cumulativeCode || "");
       return;
     }
     const timer = setTimeout(async () => {
-      bundleActionCreator(cell.id, cumulativeCode.join("\n") || "");
+      bundleActionCreator(cell.id, cumulativeCode || "");
     }, 750);
 
     // if I return a function, it will be called next time that useEffect is called
@@ -35,7 +35,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cumulativeCode.join("\n"), cell.id, bundleActionCreator]);
+  }, [cumulativeCode, cell.id, bundleActionCreator]);
 
   return (
     <Resizable direction="vertical">

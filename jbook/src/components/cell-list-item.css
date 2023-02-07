@@ -1,4 +1,9 @@
 .cell-list-item {
   position: relative;
   margin-bottom: 20px;
+  padding: 20px;
+}
+
+.react-draggable-transparent-selection .cell-list {
+  margin-bottom: 50px;
 }
