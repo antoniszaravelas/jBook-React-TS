@@ -18,8 +18,14 @@ exports.serveCommand = new commander_1.Command()
     .description("Open a file for editing")
     .option("-p, --port <number>", "port to run server on", "4005")
     .action((filename = "notebook.js", options) => {
-    const dir = path_1.default.join(process.cwd(), path_1.default.dirname(filename));
-    (0, local_api_1.serve)(parseInt(options.port), path_1.default.basename(filename), dir);
-    // options is for example
-    // options: {port: "4005"}
+    try {
+        const dir = path_1.default.join(process.cwd(), path_1.default.dirname(filename));
+        (0, local_api_1.serve)(parseInt(options.port), path_1.default.basename(filename), dir);
+        // options is for example
+        // options: {port: "4005"}
+    }
+    catch (error) {
+        if (error instanceof Error)
+            console.log(error.message);
+    }
 });
