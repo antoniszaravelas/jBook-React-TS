@@ -1,5 +1,1 @@
-export declare const serve: (port: number, filename: string, dir: string) => {
-    port: number;
-    filename: string;
-    dir: string;
-};
+export declare const serve: (port: number, filename: string, dir: string, useProxy: boolean) => Promise<void>;
