@@ -18,14 +18,32 @@ const promises_1 = __importDefault(require("fs/promises"));
 const path_1 = __importDefault(require("path"));
 const createCellsRouter = (filename, directory) => {
     const router = express_1.default.Router();
+    //   body parsing middleware
+    router.use(express_1.default.json());
     const fullPath = path_1.default.join(directory, filename);
     router.get("/cells", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        // make sure the cell storage file exists
-        // if it doesn't exist we should create it for the users
-        // read the file
-        // parse a list of cells out of it
-        // send list of cells back to browser
-    }));
+        const isLocalApiError = (err) => {
+            return typeof err.code === "string";
+        };
+        try {
+            yield promises_1.default.readFile(fullPath, { encoding: "utf-8" });
+        }
+        catch (error) {
+            if (isLocalApiError(error)) {
+                if (error.code === "ENOENT") {
+                    yield promises_1.default.writeFile(fullPath, "[]", "utf-8");
+                    res.send([]);
+                }
+            }
+            else {
+                throw error;
+            }
+        }
+    })
+    // if it doesn't exist we should create it for the users (after an error has been thrown)
+    // parse a list of cells out of it
+    // send list of cells back to browser
+    );
     router.post("/cells", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // take the list of cells from the request object, serialise them (so they can be written in the file)
         const { cells } = req.body;
