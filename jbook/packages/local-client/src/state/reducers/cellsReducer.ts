@@ -22,6 +22,9 @@ export interface CellsState {
 export const cellsReducer = produce(
   (state: CellsState = initialState, action: Action): CellsState => {
     switch (action.type) {
+      case ActionTypes.SAVE_CELLS_ERROR:
+        state.error = action.payload;
+        return state;
       case ActionTypes.MOVE_CELL:
         let { direction } = action.payload;
         const index = state.order.findIndex((id) => id === action.payload.id);
@@ -58,6 +61,24 @@ export const cellsReducer = produce(
 
         if (foundIndex < 0) state.order.push(cell.id);
         else state.order.splice(foundIndex, 0, cell.id);
+        return state;
+
+      case ActionTypes.FETCH_CELLS:
+        state.loading = true;
+        state.error = null;
+        return state;
+
+      case ActionTypes.FETCH_CELLS_COMPLETE:
+        state.order = action.payload.map((cell) => cell.id);
+        state.data = action.payload.reduce((acc, cell) => {
+          acc[cell.id] = cell;
+          return acc;
+        }, {} as CellsState["data"]);
+        return state;
+
+      case ActionTypes.FETCH_CELLS_ERROR:
+        state.loading = false;
+        state.error = action.payload;
         return state;
 
       default:
