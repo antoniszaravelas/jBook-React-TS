@@ -1,6 +1,6 @@
 // describes a command that can be invoked from the command line
 import { Command } from "commander";
-import { serve } from "local-api";
+import { serve } from "@clizaravelas/local-api";
 import path from "path";
 
 interface LocalApiError {

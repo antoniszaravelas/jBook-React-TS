@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.serveCommand = void 0;
 // describes a command that can be invoked from the command line
 const commander_1 = require("commander");
-const local_api_1 = require("local-api");
+const local_api_1 = require("@clizaravelas/local-api");
 const path_1 = __importDefault(require("path"));
 // what kind of command to hear
 // whenever it runs, the action will run
