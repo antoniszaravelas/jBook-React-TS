@@ -1,0 +1,1 @@
+[{"content":"const a = 10;\nconsole.log(a);\n\nshow(<h1>hello</h1>)","type":"code","id":"qnzh5"},{"content":"lol","type":"text","id":"ryb8d"}]
