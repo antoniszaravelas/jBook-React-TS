@@ -32,7 +32,7 @@ https://github.com/antoniszaravelas/jBook-React-TS.git
 and
 
 ```bash
-npm jsnote serve
+npm jsnote serve nameofyourfile.js
 ```
 
 After that you will be asked to navigate to http://localhost:4005 to start working around the file 
