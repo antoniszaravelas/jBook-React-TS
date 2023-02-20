@@ -11,6 +11,14 @@ My motivation to build this jBook project was my curiosity about how other web a
 * React + Redux + Typescript
 * Dynamic Design Patterns etc.
 
+This app is similar to how CodePen works (a more simplified version). How it works: 
+
+- Click any text cell to edit it
+- The code in each code editor is all joined together into 1 file. If you define a cariable for example in Cell #1, you can refer to it in any following cell 
+- You can show any React component, string, number or anything else by calling the show function (built function for this environment). Call show multiple times to show multiple values.
+- Add new cells (either a new code or a text editor) by hovering on the divider between each cell  
+
+All of the changes are saved to the file you opened JBook with So if you have run **npx jbook serve test.js**, all of the text and code you write will be saved to the ***test.js*** file.
 
 ## Installation
 
