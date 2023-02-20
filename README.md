@@ -5,7 +5,7 @@
 My motivation to build this jBook project was my curiosity about how other web apps like Codepen or CodesandBox work and at the same time I wanted to depeen my knowledge on Technologies such as 
 
 * React + Typescript
-* Code Transpilation (ESBUILD,  Webpack)
+* Code Transpilation (Babel) + Bundling (ESBUILD,  Webpack)
 * IFrames
 * Caching using IndexedDB
 * React + Redux + Typescript
