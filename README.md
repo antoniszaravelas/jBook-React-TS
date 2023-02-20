@@ -22,7 +22,14 @@ All of the changes are saved to the file you opened JBook with So if you have ru
 
 ## Installation
 
-To get the application running simply clone the repository and
+To get the application running simply clone the repository
+
+```bash
+https://github.com/antoniszaravelas/jBook-React-TS.git
+```
+
+
+and
 
 ```bash
 npm jsnote serve
